@@ -1,0 +1,631 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gandhiawan Widitama</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: satu kolom. Cover berbutir (nama, judul, peran), tentang diri ringkas, lalu project. Tiap project adalah slider geser dengan panah, drag, dan lightbox. Panel project bergantian terang dan gelap. */
+:root {
+  --black: #0b0b0b;
+  --ink: #f4f4f4;
+  --paper: #ffffff;
+  --text-dark: #0b0b0b;
+  --dim: #a3a3a3;
+  --dim-dark: #5f5f5f;
+  --line: #2a2a2a;
+  --line-strong: rgba(255, 255, 255, 0.5);
+  --tile-dark: #1c1c1c;
+  --tile-light: #ececec;
+  --font-sans: "Inter Tight", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "DM Mono", ui-monospace, Menlo, monospace;
+  color-scheme: dark;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--black); color: var(--ink);
+  font-family: var(--font-sans); font-size: 16px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+a { color: inherit; }
+.mono { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+.layout { max-width: 1280px; margin: 0 auto; }
+.block { padding-block: clamp(24px, 3.2vw, 40px); border-bottom: 1px solid var(--line); scroll-margin-top: 16px; }
+.block:last-child { border-bottom: 0; }
+
+.grain { position: relative; overflow: hidden; }
+.grain::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.22; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.slot {
+  display: grid; place-items: center; text-align: center; padding: 10px; min-width: 0;
+  border: 1px dashed var(--line-strong); color: var(--dim); background: var(--tile-dark);
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+}
+
+/* COVER */
+.hero { margin-top: 16px; position: relative; background: #1a1a1a; aspect-ratio: 1920 / 1080; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; padding: clamp(14px, 2.4vw, 32px); color: #fff; }
+.hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; }
+.hero-bar, .hero-pills { position: relative; z-index: 1; display: flex; justify-content: space-between; align-items: center; gap: 8px 12px; }
+.hero-bar { font-weight: 500; font-size: clamp(15px, 1.9vw, 24px); letter-spacing: -0.02em; }
+.hero-pills { flex-wrap: wrap; }
+.pill { border: 1px solid #fff; border-radius: 999px; padding: 1px 16px; font-size: clamp(11px, 1.1vw, 14px); font-weight: 500; background: rgba(11, 11, 11, 0.25); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* ABOUT */
+.about-top { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: clamp(20px, 4vw, 48px); align-items: center; }
+.portrait { display: block; width: 100%; height: auto; max-width: clamp(260px, 30vw, 400px); aspect-ratio: 501 / 580; filter: drop-shadow(3px 5px 5px rgba(0, 0, 0, 0.55)) drop-shadow(0 14px 22px rgba(0, 0, 0, 0.45)); }
+.about h2 { margin: 0 0 14px; font-weight: 800; letter-spacing: -0.045em; line-height: 1; font-size: clamp(1.9rem, 4.6vw, 3.2rem); }
+.about h2 small { font-size: 0.34em; font-weight: 500; letter-spacing: -0.01em; }
+.bio { text-align: justify; text-justify: inter-word; hyphens: auto; margin: 0; font-size: clamp(15px, 1.7vw, 18px); line-height: 1.45; max-width: 60ch; color: #e6e6e6; }
+.bio b { color: #fff; font-weight: 800; }
+
+.xp { list-style: none; margin: clamp(24px, 4vw, 40px) 0 0; padding: 0; }
+.xp li { display: grid; grid-template-columns: 130px minmax(0, 1fr) auto; align-items: baseline; gap: 4px 20px; padding: 11px 0; border-top: 1px solid var(--line); }
+.xp li:last-child { border-bottom: 1px solid var(--line); }
+.xp .when { color: var(--dim); }
+.xp b { font-weight: 600; }
+.xp .where { text-align: right; }
+.xp .where a { text-decoration: none; }
+.xp .where a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.mini { margin-top: clamp(24px, 4vw, 40px) !important; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 clamp(16px, 3vw, 40px); margin: 0; }
+.mini div { padding: 14px 0 0; min-width: 0; }
+.mini dt { color: var(--dim); margin-bottom: 4px; }
+.mini dd { margin: 0; font-size: 14px; line-height: 1.4; color: #dcdcdc; }
+.mini.tools { grid-template-columns: minmax(0, 1fr); }
+.mini.info { margin-top: clamp(20px, 3vw, 32px) !important; }
+.apps { display: flex; flex-wrap: nowrap; gap: clamp(6px, 1vw, 12px); margin-top: 6px; }
+.app { flex: 1 1 0; min-width: 0; max-width: 140px; height: clamp(44px, 5.4vw, 64px); padding: 0 4px; border: 1px solid var(--line-strong); border-radius: 12px; display: grid; place-items: center; font-weight: 600; font-size: clamp(11px, 1.5vw, 18px); white-space: nowrap; }
+.app.wide { flex-grow: 1.6; }
+
+/* PROJECT */
+.intro { padding-block: clamp(20px, 2.4vw, 28px) clamp(6px, 1vw, 10px); border-bottom: 0; }
+.intro h2 { margin: 0 0 8px; font-weight: 800; letter-spacing: -0.055em; line-height: 0.95; font-size: clamp(2.2rem, 6vw, 4.4rem); }
+.intro p { margin: 0; color: var(--dim); max-width: 52ch; }
+.proj { padding-block: clamp(20px, 2.4vw, 28px); border-bottom: 1px solid var(--line); scroll-margin-top: 16px; }
+.proj-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px 16px; flex-wrap: wrap; }
+.proj-head h3 { margin: 0; font-weight: 800; letter-spacing: -0.055em; line-height: 0.95; font-size: clamp(2.2rem, 6.4vw, 4.6rem); text-wrap: balance; min-width: 0; overflow-wrap: anywhere; }
+.tag { border: 1px solid currentColor; border-radius: 999px; padding: 3px 22px; font-size: 14px; font-weight: 500; white-space: nowrap; }
+.meta { margin: 14px 0 0; color: var(--dim); }
+.copy { text-align: justify; text-justify: inter-word; hyphens: auto; margin: 14px 0 0; font-size: clamp(14px, 1.5vw, 17px); line-height: 1.45; max-width: 64ch; }
+
+.block, .proj:not(.light) { padding-inline: clamp(20px, 4vw, 40px); }
+.proj.light { background: var(--paper); color: var(--text-dark); padding: clamp(20px, 4vw, 40px); margin-block: clamp(14px, 1.8vw, 22px); border-bottom: 0; }
+.proj.light .meta { color: var(--dim-dark); }
+.proj.light .slot { background: var(--tile-light); border-color: #9a9a9a; color: var(--dim-dark); }
+
+/* SLIDER */
+.slider { --sh: clamp(240px, 34vw, 400px); margin-top: 24px; }
+.track { display: flex; gap: 12px; overflow-x: auto; position: relative; scroll-snap-type: x proximity; scrollbar-width: none; cursor: grab; overscroll-behavior-x: contain; }
+.track::-webkit-scrollbar { display: none; }
+.track.drag { scroll-snap-type: none; cursor: grabbing; user-select: none; }
+.slide { flex: 0 0 auto; height: var(--sh); aspect-ratio: var(--r, 4 / 5); scroll-snap-align: start; cursor: zoom-in; }
+.slot.slide:hover { border-style: solid; }
+.slide[hidden] { display: none; }
+.phone { flex: 0 0 auto; height: var(--sh); aspect-ratio: 9 / 18.5; border-radius: 30px; border: 5px solid #111; background: #fff; padding: 10px 9px; display: grid; grid-template-rows: auto 1fr; gap: 8px; scroll-snap-align: start; cursor: default; }
+.phone .notch { width: 34%; height: 9px; background: #111; border-radius: 999px; margin: 0 auto; }
+.phone .slot { height: 100%; font-size: 10px; }
+.ctrl { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 14px; }
+.btns { display: flex; gap: 8px; }
+.arrow { width: 44px; height: 44px; border-radius: 50%; border: 1px solid currentColor; background: none; color: inherit; cursor: pointer; display: grid; place-items: center; }
+.arrow svg { width: 18px; height: 18px; }
+.arrow:hover:not(:disabled) { background: var(--ink); color: var(--black); border-color: var(--ink); }
+.proj.light .arrow:hover:not(:disabled) { background: var(--text-dark); color: var(--paper); border-color: var(--text-dark); }
+.arrow:disabled { opacity: 0.3; cursor: default; }
+.filters { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 18px; }
+.filters button { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; background: none; color: inherit; border: 1px solid currentColor; border-radius: 999px; padding: 4px 14px; cursor: pointer; }
+.filters button:hover { background: rgba(0, 0, 0, 0.08); }
+.filters button[aria-pressed="true"] { background: var(--text-dark); color: var(--paper); border-color: var(--text-dark); }
+
+/* Appleku: HP tetap di kiri, hanya reels yang bergeser */
+.content-row { --sh: clamp(240px, 34vw, 400px); display: flex; align-items: center; gap: clamp(10px, 2vw, 24px); margin-top: 12px; }
+.content-row .slider { flex: 1 1 0; min-width: 0; margin-top: 0; }
+.phone-fixed { flex: 0 0 auto; }
+.phone-fixed .slide { height: calc(var(--sh) * 1.2); width: auto; aspect-ratio: var(--r); scroll-snap-align: none; }
+@media (max-width: 760px) { .phone-fixed .slide { height: calc(var(--sh) * 1.1); } }
+
+/* Desain Appleku: tiga kolom, tinggi sama; tile terakhir tiap kolom mengisi sisa */
+.dgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 12px; }
+.dcol { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.dgrid .slide { flex: 0 0 auto; width: 100%; height: auto; aspect-ratio: var(--r); margin: 0; }
+.dcol > .slide:last-child { flex: 1 1 auto; }
+.dgrid .slide img { object-position: center; }
+@media (max-width: 760px) {
+  .dgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .dcol { display: contents; }
+  .dgrid .slide { align-self: stretch; }
+  .dgrid .dcol:last-child .slide:last-child { grid-column: 1 / -1; }
+}
+
+/* Gambar asli di slider */
+.slide.media { background: #111; padding: 0; }
+.media img, .phone .shot { display: block; width: 100%; height: 100%; object-fit: cover; -webkit-user-drag: none; user-select: none; }
+.media img { pointer-events: none; }
+.phone .shot { border-radius: 18px; object-position: top; min-height: 0; pointer-events: none; }
+.slide.media.cutout { background: transparent; }
+.media.cutout img { object-fit: contain; }
+.lb-slide:not(.slot) { background: #111; }
+.lb-slide img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* LIGHTBOX */
+.lb { position: fixed; inset: 0; z-index: 50; background: rgba(11, 11, 11, 0.94); color: var(--ink); display: grid; grid-template-rows: 1fr auto; place-items: center; padding: calc(56px + env(safe-area-inset-top, 0px)) 16px calc(20px + env(safe-area-inset-bottom, 0px)); }
+.lb[hidden] { display: none; }
+.lb-stage { display: grid; place-items: center; width: 100%; min-height: 0; }
+.lb-slide { max-width: 100%; background: var(--tile-dark); }
+.lb-bar { display: flex; align-items: center; gap: 16px; }
+.lb-close { position: absolute; top: calc(12px + env(safe-area-inset-top, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; background: none; color: var(--ink); border: 1px solid var(--ink); padding: 7px 14px; cursor: pointer; }
+.lb-close:hover { background: var(--ink); color: var(--black); }
+.lb .arrow:hover:not(:disabled) { background: var(--ink); color: var(--black); }
+
+/* GRAIN: dari About sampai akhir. Bintik terang di area gelap, bintik gelap di panel terang. */
+.grainy { position: relative; }
+.grainy::after, .proj.light::after { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 5; background-size: 200px 200px; opacity: 0.12; }
+.grainy::after { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1.5 0 0 0 -0.35'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+.proj.light { position: relative; }
+.proj.light::after { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.5 0 0 0 -0.35'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+/* Freelance: galeri menurun */
+.free { column-count: 4; column-gap: 12px; margin-top: 24px; }
+.free .slide { display: grid; width: 100%; height: auto; margin: 0 0 12px; break-inside: avoid; aspect-ratio: var(--r, 4 / 5); }
+@media (max-width: 1100px) { .free { column-count: 3; } }
+@media (max-width: 760px) { .free { column-count: 2; } }
+
+/* Sub-judul, strip Moving Space, angka */
+.subh { margin: 28px 0 0; font-weight: 400; color: var(--dim); }
+.proj.light .subh { color: var(--dim-dark); }
+.subh + .slider, .subh + .free { margin-top: 12px; }
+.strips { display: grid; gap: clamp(14px, 2.2vw, 26px); margin-top: 28px; }
+.strip-row { display: block; }
+.strip-row.flip { grid-template-columns: minmax(0, 17%) minmax(0, 1fr); gap: 1.6%; }
+.strips .slide { width: 100%; height: auto; aspect-ratio: var(--r, 5.7 / 1); }
+.strip-label { margin: 0; padding-top: clamp(2px, 1.5vw, 22px); font-size: clamp(13px, 1.7vw, 20px); line-height: 1.25; font-weight: 400; }
+.strip-label span { display: block; }
+.strip-row.flip .strip-label { text-align: right; }
+.pstats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; max-width: 520px; margin-top: 28px; }
+.pstats div { border-top: 1px solid var(--line-strong); padding-top: 8px; min-width: 0; }
+.pstats b { display: block; font-size: clamp(2rem, 5vw, 3.4rem); font-weight: 800; letter-spacing: -0.04em; line-height: 1; }
+.pstats span { display: block; margin-top: 4px; font-size: 13px; color: var(--dim); }
+.pstats + .copy { margin-top: 20px; }
+.jgrid { display: grid; gap: 12px; margin-top: 12px; }
+.jrow { display: flex; gap: 12px; align-items: flex-start; }
+.jgrid .slide { flex: var(--g) 1 0; min-width: 0; width: auto; height: auto; aspect-ratio: var(--r); }
+@media (max-width: 760px) { .jgrid { display: block; column-count: 2; column-gap: 12px; } .jrow { display: contents; } .jgrid .slide { display: block; width: 100%; margin: 0 0 12px; break-inside: avoid; } }
+.free3 { column-count: 3; }
+@media (max-width: 760px) { .free3 { column-count: 2; } }
+.ms-foot { display: grid; grid-template-columns: minmax(0, 520px) minmax(0, 1fr); gap: clamp(20px, 4vw, 56px); align-items: start; margin-top: 28px; }
+.ms-foot .pstats { margin-top: 0; max-width: none; }
+.ms-foot .copy { margin: 0; max-width: none; }
+@media (max-width: 760px) { .ms-foot { grid-template-columns: minmax(0, 1fr); gap: 20px; } }
+@media (max-width: 760px) {
+  .strip-row, .strip-row.flip { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .strip-row .strip-label { order: -1; text-align: left; padding-top: 0; }
+  .strips .slide { aspect-ratio: var(--r, 5.7 / 1); }
+}
+
+/* KONTAK: satu baris */
+.contact { padding-block: 22px 26px; border-bottom: 0; }
+.contact-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px 24px; }
+.contact-row > span { color: var(--dim); }
+.cl { font: inherit; letter-spacing: inherit; text-transform: uppercase; color: var(--ink); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
+.cl.raw { text-transform: none; letter-spacing: 0.02em; }
+.cl:hover { text-decoration-thickness: 2px; }
+
+@media (max-width: 760px) {
+  .about-top { grid-template-columns: minmax(0, 1fr); }
+  .portrait { max-width: 280px; }
+  .hero { aspect-ratio: auto; padding: 0; background: var(--black); overflow: visible; justify-content: flex-start; }
+  .hero img { position: static; height: auto; aspect-ratio: 1920 / 1080; }
+  .hero-bar { order: -1; padding: 0 0 12px; }
+  .hero-pills { justify-content: center; padding-top: 12px; }
+  .xp li { grid-template-columns: minmax(0, 1fr) auto; }
+  .xp .when { grid-column: 1 / -1; }
+  .mini { grid-template-columns: minmax(0, 1fr); gap: 0; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <filter id="rough" x="-5%" y="-5%" width="110%" height="110%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="4" result="noise"/>
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="14" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+  <symbol id="ic-next" viewBox="0 0 24 24"><path d="M4 12h16M14 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></symbol>
+  <symbol id="ic-prev" viewBox="0 0 24 24"><path d="M20 12H4M10 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></symbol>
+</svg>
+
+</head>
+<body>
+<div class="layout" id="top">
+  <main>
+    <header class="hero" aria-label="Cover">
+      <h1 class="sr">Gandhiawan Widitama, Portfolio 2026</h1>
+      <img src="img/cover.jpg" width="1920" height="1080" alt="Siluet seorang pria berransel minum dari gelas di depan latar abu berbutir bertuliskan Portfolio">
+      <div class="hero-bar"><span>Gandhiawan</span><span>© 2026</span></div>
+      <div class="hero-pills"><span class="pill">Photographer</span><span class="pill">Videographer</span><span class="pill">Graphic Designer</span><span class="pill">Editor</span></div>
+    </header>
+
+    <div class="grainy">
+    <section class="block about" id="about">
+      <div class="about-top">
+        <img class="portrait" src="img/portrait.png" width="501" height="580" alt="Potret hitam putih Gandhiawan berkacamata hitam dan berdasi, memegang selembar dokumen dan membuka telapak tangan">
+        <div>
+          <h2><small>Yo!</small> Gandhiawan Widitama <small>Here!</small></h2>
+          <p class="bio" lang="en">I'm a <b>Communication Science graduate</b> and a creative <b>videographer/photographer</b> based in <b>Yogyakarta</b>, Indonesia. Most of my inspirations come from everyday life and capturing <b>high-vibe</b> visual moments. <b>I tend to find beauty in the ordinary</b>, whether it's a perfect frame in a local coffee shop or the <b>raw energy</b> of a live music gig. I always <b>use these moments as a foundation</b> for my creative process to build unique visual identities.</p>
+          <dl class="mini info">
+            <div><dt class="mono">Education</dt><dd>University of Technology Yogyakarta<br>Communication Science, 2025</dd></div>
+            <div><dt class="mono">Languages</dt><dd>Indonesian (native)<br>English (B2)</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <dl class="mini tools">
+        <div><dt class="mono">Tools</dt><dd><div class="apps"><span class="app" title="Premiere Pro">Pr</span><span class="app" title="Photoshop">Ps</span><span class="app" title="Illustrator">Ai</span><span class="app" title="Lightroom">Lr</span><span class="app" title="After Effects">Ae</span><span class="app wide">CapCut</span><span class="app wide">Canva</span></div></dd></div>
+      </dl>
+
+
+      <ul class="xp" id="experience">
+        <li><span class="when mono">2025 – 2026</span><b>Content Creator</b><span class="where"><a href="#appleku">Appleku</a></span></li>
+        <li><span class="when mono">2026</span><b>Social Media Marketing</b><span class="where"><a href="#moving-space">Moving Space Collective</a></span></li>
+        <li><span class="when mono">2025</span><b>Digital Marketing &amp; Creative Director</b><span class="where"><a href="#luk">LUK Coffee &amp; Book</a></span></li>
+        <li><span class="when mono">2024</span><b>Photographer &amp; Videographer</b><span class="where">Terjaga Visuel</span></li>
+        <li><span class="when mono">2021 – Now</span><b>Photo, Video, Design &amp; Editing</b><span class="where">Freelance</span></li>
+      </ul>
+
+    </section>
+
+    <section class="block intro" aria-label="Projects">
+      <h2>Projects</h2>
+      <p>Selected work from my roles, newest first. Swipe or drag sideways. Tap any piece to enlarge it.</p>
+    </section>
+
+    <!-- 1. Appleku -->
+    <section class="proj light" id="appleku">
+      <div class="proj-head"><h3>Appleku.id</h3><span class="tag">Content Creator</span></div>
+      <p class="meta mono">Content Creator · Temanggung · Sep 2025 – May 2026</p>
+      <p class="copy" lang="en">As Content Creator at Appleku in Temanggung, I talk directly with audiences and buyers, turn their feedback into a more personal way of communicating, and plan the campaigns behind the content. From holiday and retail discounts to interactive posts, the goal is the same: more engagement and more sales conversions.</p>
+      <h4 class="subh mono">Content</h4>
+      <div class="content-row">
+        <div class="phone-fixed" data-gallery aria-label="Profil Instagram Appleku">
+          <div class="slide media cutout" style="--r:720/1400" data-label="Profil Instagram appleku_id · 28K followers"><img src="img/appleku-profile-mockup.webp" width="720" height="1400" alt="Mockup iPhone menampilkan profil Instagram appleku_id: 824 posts, 28K followers" draggable="false"></div>
+        </div>
+        <div class="slider" data-slider>
+        <div class="track" tabindex="0" aria-label="Konten Appleku">
+          <div class="slide media" style="--r:1080/1754" data-label="Ketika lelaki ngikutin kata hatinya · 1.3M views"><img src="img/appleku-reel-1.jpg" width="640" height="1039" alt="Reel Appleku: pengendara berhelm krem dan jas hujan hijau, teks Ketika lelaki ngikutin kata hatinya, 1.3M views" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1754" data-label="Marani Morotuwo · 84.2K views"><img src="img/appleku-reel-2.jpg" width="640" height="1039" alt="Reel Appleku: pria bertopi hitam, teks Marani Morotuwo, 84.2K views" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1754" data-label="Nyong Wong Temanggung · 255K views"><img src="img/appleku-reel-3.jpg" width="640" height="1039" alt="Reel Appleku: perempuan membawa ember oranye di depan toko, teks Nyong Wong Temanggung, 255K views" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1754" data-label="POV: Kelakuan pacar sesuai pendapatan gaji · 72.5K views"><img src="img/appleku-reel-4.jpg" width="640" height="1039" alt="Reel Appleku: pria berkacamata di depan etalase, teks POV Kelakuan pacar sesuai pendapatan gaji, 72.5K views" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1754" data-label="Persitema, #JadiKebanggan · 43.8K views"><img src="img/appleku-reel-5.jpg" width="640" height="1039" alt="Reel Appleku: pemain sepak bola menendang bola, teks Persitema #JadiKebanggan, 43.8K views" draggable="false" loading="lazy"></div>
+        </div>
+      </div>
+      </div>
+      <h4 class="subh mono">Design</h4>
+      <div class="dgrid" data-gallery aria-label="Desain Appleku">
+        <div class="dcol">
+          <div class="slide media" style="--r:720/900" data-label="November Rain"><img src="img/design-november-rain.jpg" width="720" height="900" alt="Poster Appleku November Rain: perempuan berpayung hitam memegang iPhone di bawah hujan, tulisan Best Deals, Best Price, Best Product" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:720/960" data-label="Kenapa Appleku?"><img src="img/design-kenapa-appleku.jpg" width="720" height="960" alt="Poster Appleku Kenapa Appleku: pria di dalam toko menunjukkan HP dengan ulasan Google 4,9 bintang" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:720/900" data-label="Love the Deals"><img src="img/design-love-the-deals.jpg" width="720" height="900" alt="Poster Appleku Love the Deals: perempuan memegang buket berisi iPhone merah dan ikon hati" draggable="false" loading="lazy"></div>
+        </div>
+        <div class="dcol">
+          <div class="slide media" style="--r:720/900" data-label="April Fresh Pick"><img src="img/design-april-fresh-pick.jpg" width="720" height="900" alt="Poster Appleku April Fresh Pick: pria melompat membawa tas belanja dan kotak iPhone di bawah langit biru" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:720/900" data-label="Dealsember · End Year Sale"><img src="img/design-dealsember.jpg" width="720" height="900" alt="Poster Appleku Dealsember End Year Sale: Sinterklas dengan kereta rusa membawa kotak hadiah perangkat Apple di salju" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:720/960" data-label="iPhone XR"><img src="img/design-iphone-xr.jpg" width="720" height="960" alt="Kolase hasil foto iPhone XR: sembilan foto taman dan pepohonan dengan tulisan iPhone XR" draggable="false" loading="lazy"></div>
+        </div>
+        <div class="dcol">
+          <div class="slide media" style="--r:720/900" data-label="Arti Dari Setiap Warna di Area Jam"><img src="img/design-arti-warna.jpg" width="720" height="900" alt="Konten edukasi Appleku: arti setiap warna di area jam status bar iPhone" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:720/960" data-label="May Day, Pay Day!"><img src="img/design-may-day.jpg" width="720" height="960" alt="Poster Appleku May Day Pay Day: tim Appleku berpose di atas tumpukan kotak iPhone dengan latar langit" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:720/960" data-label="Shot on iPhone 14 Pro"><img src="img/design-shot-on-14-pro.jpg" width="720" height="960" alt="Kolase foto bertuliskan Shot on iPhone 14 Pro dengan gelas kopi Kofibru" draggable="false" loading="lazy"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Moving Space Collective -->
+    <section class="proj" id="moving-space">
+      <div class="proj-head"><h3>Moving Space Collective</h3><span class="tag">Event Campaign</span></div>
+      <p class="meta mono">Social Media Marketing &amp; Admin · Temanggung · Jan 2026 – Mar 2026</p>
+      <div class="strips" data-gallery aria-label="Moving Space Collective: foto, video, dan desain">
+        <div class="strip-row"><div class="slide media" style="--r:1364/236" data-label="Moving Space Collective"><img src="img/moving-strip-1.jpg" width="1364" height="236" alt="Dokumentasi Pop Up Market Moving Space Collective" draggable="false" loading="lazy"></div></div>
+        <div class="strip-row"><div class="slide media" style="--r:1364/236" data-label="Moving Space Collective"><img src="img/moving-strip-2.jpg" width="1364" height="236" alt="Dokumentasi Pop Up Market Moving Space Collective" draggable="false" loading="lazy"></div></div>
+        <div class="strip-row"><div class="slide media" style="--r:1364/236" data-label="Moving Space Collective"><img src="img/moving-strip-3.jpg" width="1364" height="236" alt="Dokumentasi Pop Up Market Moving Space Collective" draggable="false" loading="lazy"></div></div>
+      </div>
+      <div class="slider" data-slider>
+        <div class="track" tabindex="0" aria-label="Moving Space Collective">
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 01"><img src="img/moving-01.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 1" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 02"><img src="img/moving-02.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 2" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 03"><img src="img/moving-03.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 3" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 04"><img src="img/moving-04.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 4" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 05"><img src="img/moving-05.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 5" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 06"><img src="img/moving-06.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 6" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 07"><img src="img/moving-07.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 7" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 08"><img src="img/moving-08.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 8" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 09"><img src="img/moving-09.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 9" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 10"><img src="img/moving-10.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 10" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 11"><img src="img/moving-11.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 11" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 12"><img src="img/moving-12.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 12" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 13"><img src="img/moving-13.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 13" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 14"><img src="img/moving-14.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 14" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 15"><img src="img/moving-15.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 15" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 16"><img src="img/moving-16.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 16" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 17"><img src="img/moving-17.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 17" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 18"><img src="img/moving-18.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 18" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 19"><img src="img/moving-19.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 19" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 20"><img src="img/moving-20.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 20" draggable="false" loading="lazy"></div>
+        </div>
+      </div>
+      <div class="free free3" data-gallery aria-label="Dokumentasi Moving Space Collective">
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 21"><img src="img/moving-21.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 21" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 22"><img src="img/moving-22.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 22" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 23"><img src="img/moving-23.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 23" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 24"><img src="img/moving-24.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 24" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 25"><img src="img/moving-25.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 25" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 26"><img src="img/moving-26.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 26" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 27"><img src="img/moving-27.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 27" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 28"><img src="img/moving-28.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 28" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 29"><img src="img/moving-29.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 29" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 30"><img src="img/moving-30.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 30" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 31"><img src="img/moving-31.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 31" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 32"><img src="img/moving-32.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 32" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 33"><img src="img/moving-33.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 33" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 34"><img src="img/moving-34.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 34" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 35"><img src="img/moving-35.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 35" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 36"><img src="img/moving-36.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 36" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 37"><img src="img/moving-37.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 37" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 38"><img src="img/moving-38.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 38" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 39"><img src="img/moving-39.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 39" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 40"><img src="img/moving-40.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 40" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 41"><img src="img/moving-41.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 41" draggable="false" loading="lazy"></div>
+      </div>
+      <div class="slider" data-slider>
+        <div class="track" tabindex="0" aria-label="Moving Space Collective, lainnya">
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 42"><img src="img/moving-42.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 42" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 43"><img src="img/moving-43.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 43" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 44"><img src="img/moving-44.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 44" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 45"><img src="img/moving-45.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 45" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 46"><img src="img/moving-46.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 46" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 47"><img src="img/moving-47.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 47" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 48"><img src="img/moving-48.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 48" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 49"><img src="img/moving-49.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 49" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 50"><img src="img/moving-50.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 50" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 51"><img src="img/moving-51.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 51" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 52"><img src="img/moving-52.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 52" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="Moving Space Collective · Pop Up Market 53"><img src="img/moving-53.jpg" width="1080" height="1350" alt="Dokumentasi Pop Up Market Moving Space Collective, foto 53" draggable="false" loading="lazy"></div>
+        </div>
+      </div>
+      <div class="ms-foot">
+        <div class="pstats">
+        <div><b>500+</b><span>attendees on launch day</span></div>
+        <div><b>20+</b><span>supporting brands</span></div>
+        </div>
+      <p class="copy" lang="en">Handled the collective's content strategy and social media administration from start to finish, building public awareness and engagement for its initiatives. I led the promotional campaign that filled the launch day, answered the audience and partners in real time, and secured and coordinated collaborations with 20+ supporting brands, lining up their brand assets and promotional material for the event.</p>
+      </div>
+    </section>
+
+    <!-- 3. LUK Coffee & Book -->
+    <section class="proj light" id="luk">
+      <div class="proj-head"><h3>LUK Coffee &amp; Book</h3><span class="tag">Digital Marketing</span></div>
+      <p class="meta mono">Digital Marketing &amp; Creative Director · Yogyakarta · Jan 2025 – Sep 2025</p>
+      <p class="copy" lang="en">Led the brand repositioning and rebranding around the cafe's renovation. Ran 7 workshops and pop-up activations, including 2 events at Atma Jaya University and a showcase at the BNI wondr event at 0km Yogyakarta. Built monthly themed campaigns and content pillars, and opened a new revenue stream by marketing the meeting room to corporate and student groups.</p>
+      <div class="slider" data-slider>
+        <div class="track" tabindex="0" aria-label="LUK Coffee and Book">
+          <div class="slide media" style="--r:1080/1350" data-label="LUK Coffee &amp; Book · 01"><img src="img/luk-01.jpg" width="1080" height="1350" alt="Konten digital marketing LUK Coffee and Book, 1" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="LUK Coffee &amp; Book · 02"><img src="img/luk-02.jpg" width="1080" height="1350" alt="Konten digital marketing LUK Coffee and Book, 2" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="LUK Coffee &amp; Book · 03"><img src="img/luk-03.jpg" width="1080" height="1350" alt="Konten digital marketing LUK Coffee and Book, 3" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="LUK Coffee &amp; Book · 04"><img src="img/luk-04.jpg" width="1080" height="1350" alt="Konten digital marketing LUK Coffee and Book, 4" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="LUK Coffee &amp; Book · 05"><img src="img/luk-05.jpg" width="1080" height="1350" alt="Konten digital marketing LUK Coffee and Book, 5" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1400/1750" data-label="LUK Coffee &amp; Book · 06"><img src="img/luk-06.jpg" width="1400" height="1750" alt="Konten digital marketing LUK Coffee and Book, 6" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="LUK Coffee &amp; Book · 07"><img src="img/luk-07.jpg" width="1080" height="1350" alt="Konten digital marketing LUK Coffee and Book, 7" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="LUK Coffee &amp; Book · 08"><img src="img/luk-08.jpg" width="1080" height="1350" alt="Konten digital marketing LUK Coffee and Book, 8" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1920" data-label="LUK Coffee &amp; Book · 09"><img src="img/luk-09.jpg" width="1080" height="1920" alt="Konten digital marketing LUK Coffee and Book, 9" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1920" data-label="LUK Coffee &amp; Book · 10"><img src="img/luk-10.jpg" width="1080" height="1920" alt="Konten digital marketing LUK Coffee and Book, 10" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="LUK Coffee &amp; Book · 11"><img src="img/luk-11.jpg" width="1080" height="1350" alt="Konten digital marketing LUK Coffee and Book, 11" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="LUK Coffee &amp; Book · 12"><img src="img/luk-12.jpg" width="1080" height="1350" alt="Konten digital marketing LUK Coffee and Book, 12" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1400/1750" data-label="LUK Coffee &amp; Book · 13"><img src="img/luk-13.jpg" width="1400" height="1750" alt="Konten digital marketing LUK Coffee and Book, 13" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="LUK Coffee &amp; Book · 14"><img src="img/luk-14.jpg" width="1080" height="1350" alt="Konten digital marketing LUK Coffee and Book, 14" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1400/1750" data-label="LUK Coffee &amp; Book · 15"><img src="img/luk-15.jpg" width="1400" height="1750" alt="Konten digital marketing LUK Coffee and Book, 15" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="LUK Coffee &amp; Book · 16"><img src="img/luk-16.jpg" width="1080" height="1350" alt="Konten digital marketing LUK Coffee and Book, 16" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1920" data-label="LUK Coffee &amp; Book · 17"><img src="img/luk-17.jpg" width="1080" height="1920" alt="Konten digital marketing LUK Coffee and Book, 17" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1400/1750" data-label="LUK Coffee &amp; Book · 18"><img src="img/luk-18.jpg" width="1400" height="1750" alt="Konten digital marketing LUK Coffee and Book, 18" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="LUK Coffee &amp; Book · 19"><img src="img/luk-19.jpg" width="1080" height="1350" alt="Konten digital marketing LUK Coffee and Book, 19" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1920" data-label="LUK Coffee &amp; Book · 20"><img src="img/luk-20.jpg" width="1080" height="1920" alt="Konten digital marketing LUK Coffee and Book, 20" draggable="false" loading="lazy"></div>
+        </div>
+      </div>
+      <div class="jgrid" data-gallery aria-label="Konten LUK Coffee and Book lainnya">
+        <div class="jrow">
+          <div class="slide media" style="--r:1080/1350;--g:0.8000" data-label="LUK Coffee &amp; Book · 21"><img src="img/luk-21.jpg" width="1080" height="1350" alt="Konten digital marketing LUK Coffee and Book, 21" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1920;--g:0.5625" data-label="LUK Coffee &amp; Book · 22"><img src="img/luk-22.jpg" width="1080" height="1920" alt="Konten digital marketing LUK Coffee and Book, 22" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350;--g:0.8000" data-label="LUK Coffee &amp; Book · 23"><img src="img/luk-23.jpg" width="1080" height="1350" alt="Konten digital marketing LUK Coffee and Book, 23" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1920;--g:0.5625" data-label="LUK Coffee &amp; Book · 24"><img src="img/luk-24.jpg" width="1080" height="1920" alt="Konten digital marketing LUK Coffee and Book, 24" draggable="false" loading="lazy"></div>
+        </div>
+        <div class="jrow">
+          <div class="slide media" style="--r:1080/1920;--g:0.5625" data-label="LUK Coffee &amp; Book · 25"><img src="img/luk-25.jpg" width="1080" height="1920" alt="Konten digital marketing LUK Coffee and Book, 25" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1920;--g:0.5625" data-label="LUK Coffee &amp; Book · 26"><img src="img/luk-26.jpg" width="1080" height="1920" alt="Konten digital marketing LUK Coffee and Book, 26" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1920;--g:0.5625" data-label="LUK Coffee &amp; Book · 27"><img src="img/luk-27.jpg" width="1080" height="1920" alt="Konten digital marketing LUK Coffee and Book, 27" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350;--g:0.8000" data-label="LUK Coffee &amp; Book · 28"><img src="img/luk-28.jpg" width="1080" height="1350" alt="Konten digital marketing LUK Coffee and Book, 28" draggable="false" loading="lazy"></div>
+        </div>
+        <div class="jrow">
+          <div class="slide media" style="--r:1080/1350;--g:0.8000" data-label="LUK Coffee &amp; Book · 29"><img src="img/luk-29.jpg" width="1080" height="1350" alt="Konten digital marketing LUK Coffee and Book, 29" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1920;--g:0.5625" data-label="LUK Coffee &amp; Book · 30"><img src="img/luk-30.jpg" width="1080" height="1920" alt="Konten digital marketing LUK Coffee and Book, 30" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1400/1980;--g:0.7071" data-label="LUK Coffee &amp; Book · 31"><img src="img/luk-31.jpg" width="1400" height="1980" alt="Konten digital marketing LUK Coffee and Book, 31" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1920;--g:0.5625" data-label="LUK Coffee &amp; Book · 32"><img src="img/luk-32.jpg" width="1080" height="1920" alt="Konten digital marketing LUK Coffee and Book, 32" draggable="false" loading="lazy"></div>
+        </div>
+        <div class="jrow">
+          <div class="slide media" style="--r:1080/1350;--g:0.8000" data-label="LUK Coffee &amp; Book · 33"><img src="img/luk-33.jpg" width="1080" height="1350" alt="Konten digital marketing LUK Coffee and Book, 33" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1920;--g:0.5625" data-label="LUK Coffee &amp; Book · 34"><img src="img/luk-34.jpg" width="1080" height="1920" alt="Konten digital marketing LUK Coffee and Book, 34" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350;--g:0.8000" data-label="LUK Coffee &amp; Book · 35"><img src="img/luk-35.jpg" width="1080" height="1350" alt="Konten digital marketing LUK Coffee and Book, 35" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350;--g:0.8000" data-label="LUK Coffee &amp; Book · 36"><img src="img/luk-36.jpg" width="1080" height="1350" alt="Konten digital marketing LUK Coffee and Book, 36" draggable="false" loading="lazy"></div>
+        </div>
+        <div class="jrow">
+          <div class="slide media" style="--r:1080/1350;--g:0.8000" data-label="LUK Coffee &amp; Book · 37"><img src="img/luk-37.jpg" width="1080" height="1350" alt="Konten digital marketing LUK Coffee and Book, 37" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1920;--g:0.5625" data-label="LUK Coffee &amp; Book · 38"><img src="img/luk-38.jpg" width="1080" height="1920" alt="Konten digital marketing LUK Coffee and Book, 38" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1400/1980;--g:0.7071" data-label="LUK Coffee &amp; Book · 39"><img src="img/luk-39.jpg" width="1400" height="1980" alt="Konten digital marketing LUK Coffee and Book, 39" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350;--g:0.8000" data-label="LUK Coffee &amp; Book · 40"><img src="img/luk-40.jpg" width="1080" height="1350" alt="Konten digital marketing LUK Coffee and Book, 40" draggable="false" loading="lazy"></div>
+        </div>
+      </div>
+      <div class="slider" data-slider>
+        <div class="track" tabindex="0" aria-label="LUK Coffee and Book, konten menu">
+          <div class="slide media" style="--r:1358/1920" data-label="LUK Coffee &amp; Book · 41"><img src="img/luk-41.jpg" width="1358" height="1920" alt="Konten digital marketing LUK Coffee and Book, 41" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="LUK Coffee &amp; Book · 42"><img src="img/luk-42.jpg" width="1080" height="1350" alt="Konten digital marketing LUK Coffee and Book, 42" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1920" data-label="LUK Coffee &amp; Book · 43"><img src="img/luk-43.jpg" width="1080" height="1920" alt="Konten digital marketing LUK Coffee and Book, 43" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:799/1920" data-label="LUK Coffee &amp; Book · 44"><img src="img/luk-44.jpg" width="799" height="1920" alt="Konten digital marketing LUK Coffee and Book, 44" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1920" data-label="LUK Coffee &amp; Book · 45"><img src="img/luk-45.jpg" width="1080" height="1920" alt="Konten digital marketing LUK Coffee and Book, 45" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="LUK Coffee &amp; Book · 46"><img src="img/luk-46.jpg" width="1080" height="1350" alt="Konten digital marketing LUK Coffee and Book, 46" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="LUK Coffee &amp; Book · 47"><img src="img/luk-47.jpg" width="1080" height="1350" alt="Konten digital marketing LUK Coffee and Book, 47" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="LUK Coffee &amp; Book · 48"><img src="img/luk-48.jpg" width="1080" height="1350" alt="Konten digital marketing LUK Coffee and Book, 48" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1358/1920" data-label="LUK Coffee &amp; Book · 49"><img src="img/luk-49.jpg" width="1358" height="1920" alt="Konten digital marketing LUK Coffee and Book, 49" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1350" data-label="LUK Coffee &amp; Book · 50"><img src="img/luk-50.jpg" width="1080" height="1350" alt="Konten digital marketing LUK Coffee and Book, 50" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1920" data-label="LUK Coffee &amp; Book · 51"><img src="img/luk-51.jpg" width="1080" height="1920" alt="Konten digital marketing LUK Coffee and Book, 51" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1358/1920" data-label="LUK Coffee &amp; Book · 52"><img src="img/luk-52.jpg" width="1358" height="1920" alt="Konten digital marketing LUK Coffee and Book, 52" draggable="false" loading="lazy"></div>
+          <div class="slide media" style="--r:1080/1920" data-label="LUK Coffee &amp; Book · 53"><img src="img/luk-53.jpg" width="1080" height="1920" alt="Konten digital marketing LUK Coffee and Book, 53" draggable="false" loading="lazy"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block contact" id="contact">
+      <div class="contact-row mono">
+        <span>© 2026 Gandhiawan Widitama</span>
+        <button class="cl raw" type="button" data-copy="gandhiawan13@gmail.com" aria-label="Salin email">gandhiawan13@gmail.com</button>
+        <button class="cl raw" type="button" data-copy="085799657964" aria-label="Salin nomor WhatsApp">085799657964</button>
+        <a class="cl" href="https://www.instagram.com/gandhiawwan/" target="_blank" rel="noopener">Instagram</a>
+        <a class="cl" href="https://www.linkedin.com/in/gandhiawan" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </section>
+    </div>
+  </main>
+</div>
+
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Pratinjau karya">
+  <button class="lb-close" id="lbClose" type="button">Close</button>
+  <div class="lb-stage" id="lbStage"></div>
+  <div class="lb-bar">
+    <button class="arrow" type="button" id="lbPrev" aria-label="Sebelumnya"><svg><use href="#ic-prev"/></svg></button>
+    <span class="mono" id="lbCount"></span>
+    <button class="arrow" type="button" id="lbNext" aria-label="Berikutnya"><svg><use href="#ic-next"/></svg></button>
+  </div>
+</div>
+
+<script>
+(function () {
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function pad(n) { return n < 10 ? "0" + n : "" + n; }
+  function labelOf(el) { return el.getAttribute("data-label") || el.textContent.trim(); }
+
+  /* Lightbox */
+  var lb = document.getElementById("lb"), stage = document.getElementById("lbStage");
+  var lbCount = document.getElementById("lbCount"), lbPrev = document.getElementById("lbPrev"), lbNext = document.getElementById("lbNext");
+  var lbList = [], lbIdx = 0, lastFocus = null;
+  function ratioOf(el) {
+    var r = (el.style.getPropertyValue("--r") || "4/5").split("/");
+    var v = parseFloat(r[0]) / parseFloat(r[1] || 1);
+    return { text: r.join(" / "), value: v || 0.8 };
+  }
+  function renderLb() {
+    var s = lbList[lbIdx], r = ratioOf(s);
+    stage.innerHTML = "";
+    var box = document.createElement("div");
+    box.className = s.querySelector("img") ? "lb-slide" : "slot lb-slide";
+    box.style.aspectRatio = r.text;
+    box.style.width = "min(100%, " + (r.value * 68).toFixed(2) + "vh)";
+    box.innerHTML = s.innerHTML;
+    stage.appendChild(box);
+    lbCount.textContent = pad(lbIdx + 1) + " / " + pad(lbList.length) + " · " + labelOf(s);
+    lbPrev.disabled = lbIdx === 0; lbNext.disabled = lbIdx === lbList.length - 1;
+  }
+  function openLb(list, slide) {
+    lbList = list; lbIdx = Math.max(0, list.indexOf(slide)); lastFocus = slide;
+    renderLb(); lb.hidden = false; document.getElementById("lbClose").focus();
+  }
+  function closeLb() { lb.hidden = true; if (lastFocus) lastFocus.focus(); }
+  function stepLb(d) { var n = lbIdx + d; if (n >= 0 && n < lbList.length) { lbIdx = n; renderLb(); } }
+  lbPrev.addEventListener("click", function () { stepLb(-1); });
+  lbNext.addEventListener("click", function () { stepLb(1); });
+  document.getElementById("lbClose").addEventListener("click", closeLb);
+  lb.addEventListener("click", function (e) { if (e.target === lb || e.target === stage) closeLb(); });
+  document.addEventListener("keydown", function (e) {
+    if (lb.hidden) return;
+    if (e.key === "Escape") closeLb();
+    else if (e.key === "ArrowLeft") stepLb(-1);
+    else if (e.key === "ArrowRight") stepLb(1);
+  });
+
+  /* Sliders */
+  document.querySelectorAll("[data-slider]").forEach(function (sl) {
+    var track = sl.querySelector(".track");
+    function slides() { return Array.prototype.filter.call(track.querySelectorAll(".slide"), function (c) { return !c.hidden; }); }
+    function go(d) { track.scrollBy({ left: d * track.clientWidth * 0.8, behavior: reduce ? "auto" : "smooth" }); }
+    track.addEventListener("keydown", function (e) {
+      if (e.target !== track) return;
+      if (e.key === "ArrowRight") { e.preventDefault(); go(1); }
+      if (e.key === "ArrowLeft") { e.preventDefault(); go(-1); }
+    });
+
+    /* Drag dengan mouse; sentuhan memakai scroll bawaan */
+    var down = false, moved = false, sx = 0, s0 = 0;
+    track.addEventListener("pointerdown", function (e) {
+      if (e.pointerType !== "mouse" || e.button !== 0) return;
+      down = true; moved = false; sx = e.clientX; s0 = track.scrollLeft;
+    });
+    window.addEventListener("pointermove", function (e) {
+      if (!down) return;
+      var dx = e.clientX - sx;
+      if (!moved && Math.abs(dx) > 5) { moved = true; track.classList.add("drag"); }
+      if (moved) track.scrollLeft = s0 - dx;
+    });
+    window.addEventListener("pointerup", function () { if (down) { down = false; track.classList.remove("drag"); } });
+
+    /* Klik karya membuka lightbox */
+    Array.prototype.forEach.call(track.querySelectorAll(".slide"), function (el) {
+      el.tabIndex = 0; el.setAttribute("role", "button"); el.setAttribute("aria-label", "Perbesar " + labelOf(el));
+      el.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openLb(slides(), el); } });
+    });
+    track.addEventListener("click", function (e) {
+      if (moved) { moved = false; return; }
+      var el = e.target.closest ? e.target.closest(".slide") : null;
+      if (el) openLb(slides(), el);
+    });
+  });
+
+  /* Galeri statis (Freelance, desain Appleku, strip Moving Space), filter bila ada */
+  document.querySelectorAll("[data-gallery]").forEach(function (g) {
+    var panel = g.closest(".proj"), filters = panel.querySelectorAll("[data-filter]");
+    function all() { return Array.prototype.slice.call(g.querySelectorAll(".slide")); }
+    function shown() { return all().filter(function (c) { return !c.hidden; }); }
+    all().forEach(function (el) {
+      el.tabIndex = 0; el.setAttribute("role", "button"); el.setAttribute("aria-label", "Perbesar " + labelOf(el));
+      el.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openLb(shown(), el); } });
+    });
+    g.addEventListener("click", function (e) {
+      var el = e.target.closest ? e.target.closest(".slide") : null;
+      if (el) openLb(shown(), el);
+    });
+    Array.prototype.forEach.call(filters, function (btn) {
+      btn.addEventListener("click", function () {
+        var f = btn.getAttribute("data-filter");
+        Array.prototype.forEach.call(filters, function (b) { b.setAttribute("aria-pressed", b === btn ? "true" : "false"); });
+        all().forEach(function (c) { c.hidden = f !== "all" && c.getAttribute("data-cat") !== f; });
+      });
+    });
+  });
+
+  
+/* Salin kontak */
+  document.querySelectorAll("[data-copy]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var text = btn.getAttribute("data-copy"), label = btn.textContent;
+      function done(m) { btn.textContent = m; setTimeout(function () { btn.textContent = label; }, 1400); }
+      function select() { var r = document.createRange(); r.selectNodeContents(btn); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () { done("Copied"); }, function () { select(); done("Select + copy"); });
+      } else { select(); done("Select + copy"); }
+    });
+  });
+})();
+</script>
+</body>
+</html>
