@@ -194,10 +194,10 @@ a { color: inherit; }
 .pstats b { display: block; font-size: clamp(2rem, 5vw, 3.4rem); font-weight: 800; letter-spacing: -0.04em; line-height: 1; }
 .pstats span { display: block; margin-top: 4px; font-size: 13px; color: var(--dim); }
 .pstats + .copy { margin-top: 20px; }
-.vrow { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-start; margin-top: 12px; }
-.vid { margin: 0; max-width: 100%; }
-.vid video { display: block; height: clamp(240px, 34vw, 400px); width: auto; max-width: 100%; background: #111; border: 1px solid var(--line-strong); object-fit: contain; }
-.vid figcaption { margin-top: 6px; font-size: 12px; opacity: .7; }
+.media.vtile video { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+@property --fl { syntax: "<length>"; inherits: false; initial-value: 0px; }
+@property --fr { syntax: "<length>"; inherits: false; initial-value: 0px; }
+.slider .track { -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--fl), #000 calc(100% - var(--fr)), transparent 100%); mask-image: linear-gradient(to right, transparent 0, #000 var(--fl), #000 calc(100% - var(--fr)), transparent 100%); transition: --fl .25s, --fr .25s; }
 .jgrid { display: grid; gap: 12px; margin-top: 12px; }
 .jrow { display: flex; gap: 12px; align-items: flex-start; }
 .jgrid .slide { flex: var(--g) 1 0; min-width: 0; width: auto; height: auto; aspect-ratio: var(--r); }
@@ -421,17 +421,20 @@ a { color: inherit; }
           <div class="slide media" style="--r:1080/1350" data-label="LUK Coffee &amp; Book · 01"><img src="img/luk-01.jpg" width="1080" height="1350" alt="Konten digital marketing LUK Coffee and Book, 1" draggable="false" loading="lazy"></div>
           <div class="slide media" style="--r:1080/1350" data-label="LUK Coffee &amp; Book · 02"><img src="img/luk-02.jpg" width="1080" height="1350" alt="Konten digital marketing LUK Coffee and Book, 2" draggable="false" loading="lazy"></div>
           <div class="slide media" style="--r:1080/1350" data-label="LUK Coffee &amp; Book · 03"><img src="img/luk-03.jpg" width="1080" height="1350" alt="Konten digital marketing LUK Coffee and Book, 3" draggable="false" loading="lazy"></div>
+          <div class="slide media vtile" style="--r:1080/1920" data-label="LUK Coffee &amp; Book · Sei Sapi Lalola"><video muted loop playsinline preload="metadata" poster="https://res.cloudinary.com/m2krmpk7/video/upload/so_0,q_auto/v1794778976/Sei_Lalola.jpg" aria-label="Video Sei Sapi Lalola"><source src="https://res.cloudinary.com/m2krmpk7/video/upload/q_auto/v1794778976/Sei_Lalola.mp4" type="video/mp4"></video></div>
           <div class="slide media" style="--r:1080/1350" data-label="LUK Coffee &amp; Book · 04"><img src="img/luk-04.jpg" width="1080" height="1350" alt="Konten digital marketing LUK Coffee and Book, 4" draggable="false" loading="lazy"></div>
           <div class="slide media" style="--r:1080/1350" data-label="LUK Coffee &amp; Book · 05"><img src="img/luk-05.jpg" width="1080" height="1350" alt="Konten digital marketing LUK Coffee and Book, 5" draggable="false" loading="lazy"></div>
           <div class="slide media" style="--r:1400/1750" data-label="LUK Coffee &amp; Book · 06"><img src="img/luk-06.jpg" width="1400" height="1750" alt="Konten digital marketing LUK Coffee and Book, 6" draggable="false" loading="lazy"></div>
           <div class="slide media" style="--r:1080/1350" data-label="LUK Coffee &amp; Book · 07"><img src="img/luk-07.jpg" width="1080" height="1350" alt="Konten digital marketing LUK Coffee and Book, 7" draggable="false" loading="lazy"></div>
           <div class="slide media" style="--r:1080/1350" data-label="LUK Coffee &amp; Book · 08"><img src="img/luk-08.jpg" width="1080" height="1350" alt="Konten digital marketing LUK Coffee and Book, 8" draggable="false" loading="lazy"></div>
+          <div class="slide media vtile" style="--r:1080/1920" data-label="LUK Coffee &amp; Book · Kiss Delight"><video muted loop playsinline preload="metadata" poster="https://res.cloudinary.com/m2krmpk7/video/upload/so_0,q_auto/v1794778963/Kiss_Delight.jpg" aria-label="Video Kiss Delight"><source src="https://res.cloudinary.com/m2krmpk7/video/upload/q_auto/v1794778963/Kiss_Delight.mp4" type="video/mp4"></video></div>
           <div class="slide media" style="--r:1080/1920" data-label="LUK Coffee &amp; Book · 09"><img src="img/luk-09.jpg" width="1080" height="1920" alt="Konten digital marketing LUK Coffee and Book, 9" draggable="false" loading="lazy"></div>
           <div class="slide media" style="--r:1080/1920" data-label="LUK Coffee &amp; Book · 10"><img src="img/luk-10.jpg" width="1080" height="1920" alt="Konten digital marketing LUK Coffee and Book, 10" draggable="false" loading="lazy"></div>
           <div class="slide media" style="--r:1080/1350" data-label="LUK Coffee &amp; Book · 11"><img src="img/luk-11.jpg" width="1080" height="1350" alt="Konten digital marketing LUK Coffee and Book, 11" draggable="false" loading="lazy"></div>
           <div class="slide media" style="--r:1080/1350" data-label="LUK Coffee &amp; Book · 12"><img src="img/luk-12.jpg" width="1080" height="1350" alt="Konten digital marketing LUK Coffee and Book, 12" draggable="false" loading="lazy"></div>
           <div class="slide media" style="--r:1400/1750" data-label="LUK Coffee &amp; Book · 13"><img src="img/luk-13.jpg" width="1400" height="1750" alt="Konten digital marketing LUK Coffee and Book, 13" draggable="false" loading="lazy"></div>
           <div class="slide media" style="--r:1080/1350" data-label="LUK Coffee &amp; Book · 14"><img src="img/luk-14.jpg" width="1080" height="1350" alt="Konten digital marketing LUK Coffee and Book, 14" draggable="false" loading="lazy"></div>
+          <div class="slide media vtile" style="--r:1080/1920" data-label="LUK Coffee &amp; Book · Motion Logo"><video muted loop playsinline preload="metadata" poster="https://res.cloudinary.com/m2krmpk7/video/upload/so_0,q_auto/v1794778932/Motion_Logo_1.jpg" aria-label="Video Motion Logo"><source src="https://res.cloudinary.com/m2krmpk7/video/upload/q_auto/v1794778932/Motion_Logo_1.mp4" type="video/mp4"></video></div>
           <div class="slide media" style="--r:1400/1750" data-label="LUK Coffee &amp; Book · 15"><img src="img/luk-15.jpg" width="1400" height="1750" alt="Konten digital marketing LUK Coffee and Book, 15" draggable="false" loading="lazy"></div>
           <div class="slide media" style="--r:1080/1350" data-label="LUK Coffee &amp; Book · 16"><img src="img/luk-16.jpg" width="1080" height="1350" alt="Konten digital marketing LUK Coffee and Book, 16" draggable="false" loading="lazy"></div>
           <div class="slide media" style="--r:1080/1920" data-label="LUK Coffee &amp; Book · 17"><img src="img/luk-17.jpg" width="1080" height="1920" alt="Konten digital marketing LUK Coffee and Book, 17" draggable="false" loading="lazy"></div>
@@ -489,21 +492,6 @@ a { color: inherit; }
           <div class="slide media" style="--r:1080/1920" data-label="LUK Coffee &amp; Book · 53"><img src="img/luk-53.jpg" width="1080" height="1920" alt="Konten digital marketing LUK Coffee and Book, 53" draggable="false" loading="lazy"></div>
         </div>
       </div>
-      <h4 class="subh mono">Video</h4>
-      <div class="vrow">
-        <figure class="vid">
-          <video controls playsinline preload="none" poster="https://res.cloudinary.com/m2krmpk7/video/upload/so_0,q_auto/v1794778976/Sei_Lalola.jpg" aria-label="Video LUK Coffee and Book: Sei Sapi Lalola"><source src="https://res.cloudinary.com/m2krmpk7/video/upload/q_auto/v1794778976/Sei_Lalola.mp4" type="video/mp4"></video>
-          <figcaption class="mono">Sei Sapi Lalola</figcaption>
-        </figure>
-        <figure class="vid">
-          <video controls playsinline preload="none" poster="https://res.cloudinary.com/m2krmpk7/video/upload/so_0,q_auto/v1794778963/Kiss_Delight.jpg" aria-label="Video LUK Coffee and Book: Kiss Delight"><source src="https://res.cloudinary.com/m2krmpk7/video/upload/q_auto/v1794778963/Kiss_Delight.mp4" type="video/mp4"></video>
-          <figcaption class="mono">Kiss Delight</figcaption>
-        </figure>
-        <figure class="vid">
-          <video controls playsinline preload="none" poster="https://res.cloudinary.com/m2krmpk7/video/upload/so_0,q_auto/v1794778932/Motion_Logo_1.jpg" aria-label="Video LUK Coffee and Book: Motion Logo"><source src="https://res.cloudinary.com/m2krmpk7/video/upload/q_auto/v1794778932/Motion_Logo_1.mp4" type="video/mp4"></video>
-          <figcaption class="mono">Motion Logo</figcaption>
-        </figure>
-      </div>
     </section>
 
     <section class="block contact" id="contact">
@@ -553,6 +541,7 @@ a { color: inherit; }
     box.style.width = "min(100%, " + (r.value * 68).toFixed(2) + "vh)";
     box.innerHTML = s.innerHTML;
     stage.appendChild(box);
+    box.querySelectorAll("video").forEach(function (v) { v.muted = true; v.loop = true; v.controls = true; v.preload = "auto"; v.style.pointerEvents = "auto"; var p = v.play(); if (p && p.catch) p.catch(function () {}); });
     lbCount.textContent = pad(lbIdx + 1) + " / " + pad(lbList.length) + " · " + labelOf(s);
     lbPrev.disabled = lbIdx === 0; lbNext.disabled = lbIdx === lbList.length - 1;
   }
@@ -576,6 +565,16 @@ a { color: inherit; }
   /* Sliders */
   document.querySelectorAll("[data-slider]").forEach(function (sl) {
     var track = sl.querySelector(".track");
+    function fade() {
+      var max = track.scrollWidth - track.clientWidth;
+      track.style.setProperty("--fl", track.scrollLeft > 4 ? "56px" : "0px");
+      track.style.setProperty("--fr", track.scrollLeft < max - 4 ? "56px" : "0px");
+    }
+    track.addEventListener("scroll", fade, { passive: true });
+    track.addEventListener("load", fade, true);
+    window.addEventListener("resize", fade);
+    if (window.ResizeObserver) new ResizeObserver(fade).observe(track);
+    fade();
     function slides() { return Array.prototype.filter.call(track.querySelectorAll(".slide"), function (c) { return !c.hidden; }); }
     function go(d) { track.scrollBy({ left: d * track.clientWidth * 0.8, behavior: reduce ? "auto" : "smooth" }); }
     track.addEventListener("keydown", function (e) {
@@ -633,7 +632,24 @@ a { color: inherit; }
   });
 
   
-/* Salin kontak */
+/* Video: putar otomatis saat terlihat, berhenti saat keluar layar */
+  var vids = document.querySelectorAll(".vtile video");
+  Array.prototype.forEach.call(vids, function (v) {
+    v.addEventListener("loadedmetadata", function () {
+      if (v.videoWidth && v.videoHeight) v.parentNode.style.setProperty("--r", v.videoWidth + "/" + v.videoHeight);
+    });
+  });
+  if (!reduce && "IntersectionObserver" in window) {
+    var vio = new IntersectionObserver(function (es) {
+      es.forEach(function (en) {
+        var v = en.target;
+        if (en.isIntersecting) { var p = v.play(); if (p && p.catch) p.catch(function () {}); } else v.pause();
+      });
+    }, { threshold: 0.5 });
+    Array.prototype.forEach.call(vids, function (v) { vio.observe(v); });
+  }
+
+  /* Salin kontak */
   document.querySelectorAll("[data-copy]").forEach(function (btn) {
     btn.addEventListener("click", function () {
       var text = btn.getAttribute("data-copy"), label = btn.textContent;
