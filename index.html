@@ -194,6 +194,10 @@ a { color: inherit; }
 .pstats b { display: block; font-size: clamp(2rem, 5vw, 3.4rem); font-weight: 800; letter-spacing: -0.04em; line-height: 1; }
 .pstats span { display: block; margin-top: 4px; font-size: 13px; color: var(--dim); }
 .pstats + .copy { margin-top: 20px; }
+.vrow { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-start; margin-top: 12px; }
+.vid { margin: 0; max-width: 100%; }
+.vid video { display: block; height: clamp(240px, 34vw, 400px); width: auto; max-width: 100%; background: #111; border: 1px solid var(--line-strong); object-fit: contain; }
+.vid figcaption { margin-top: 6px; font-size: 12px; opacity: .7; }
 .jgrid { display: grid; gap: 12px; margin-top: 12px; }
 .jrow { display: flex; gap: 12px; align-items: flex-start; }
 .jgrid .slide { flex: var(--g) 1 0; min-width: 0; width: auto; height: auto; aspect-ratio: var(--r); }
@@ -484,6 +488,21 @@ a { color: inherit; }
           <div class="slide media" style="--r:1358/1920" data-label="LUK Coffee &amp; Book · 52"><img src="img/luk-52.jpg" width="1358" height="1920" alt="Konten digital marketing LUK Coffee and Book, 52" draggable="false" loading="lazy"></div>
           <div class="slide media" style="--r:1080/1920" data-label="LUK Coffee &amp; Book · 53"><img src="img/luk-53.jpg" width="1080" height="1920" alt="Konten digital marketing LUK Coffee and Book, 53" draggable="false" loading="lazy"></div>
         </div>
+      </div>
+      <h4 class="subh mono">Video</h4>
+      <div class="vrow">
+        <figure class="vid">
+          <video controls playsinline preload="none" poster="https://res.cloudinary.com/m2krmpk7/video/upload/so_0,q_auto/v1794778976/Sei_Lalola.jpg" aria-label="Video LUK Coffee and Book: Sei Sapi Lalola"><source src="https://res.cloudinary.com/m2krmpk7/video/upload/q_auto/v1794778976/Sei_Lalola.mp4" type="video/mp4"></video>
+          <figcaption class="mono">Sei Sapi Lalola</figcaption>
+        </figure>
+        <figure class="vid">
+          <video controls playsinline preload="none" poster="https://res.cloudinary.com/m2krmpk7/video/upload/so_0,q_auto/v1794778963/Kiss_Delight.jpg" aria-label="Video LUK Coffee and Book: Kiss Delight"><source src="https://res.cloudinary.com/m2krmpk7/video/upload/q_auto/v1794778963/Kiss_Delight.mp4" type="video/mp4"></video>
+          <figcaption class="mono">Kiss Delight</figcaption>
+        </figure>
+        <figure class="vid">
+          <video controls playsinline preload="none" poster="https://res.cloudinary.com/m2krmpk7/video/upload/so_0,q_auto/v1794778932/Motion_Logo_1.jpg" aria-label="Video LUK Coffee and Book: Motion Logo"><source src="https://res.cloudinary.com/m2krmpk7/video/upload/q_auto/v1794778932/Motion_Logo_1.mp4" type="video/mp4"></video>
+          <figcaption class="mono">Motion Logo</figcaption>
+        </figure>
       </div>
     </section>
 
